@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word Jumble</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .gpt-jumble {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 300px;
+      text-align: center;
+    }
+    .gpt-jumble h2 {
+      margin-bottom: 1rem;
+    }
+    .gpt-jumble-word {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 1rem 0;
+    }
+    input {
+      padding: 0.5rem;
+      width: 100%;
+      margin-bottom: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.5rem;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .check-btn { background: #4caf50; }
+    .hint-btn { background: #2196f3; }
+    .result, .hint { margin-top: 1rem; min-height: 1.2rem; }
+  </style>
+</head>
+<body>
+  <div class="gpt-jumble">
+    <h2>🧩 Word Jumble</h2>
+    <div class="gpt-jumble-word">Loading...</div>
+    <input type="text" placeholder="Your guess..." />
+    <button class="check-btn">Check</button>
+    <div class="result"></div>
+    <button class="hint-btn">Need a Hint?</button>
+    <div class="hint"></div>
+  </div>
+
+  <script>
+    (function(){
+      const words = [
+        { word: "education", hint: "The process of receiving or giving instruction" },
+        { word: "technology", hint: "Application of scientific knowledge" },
+        { word: "language", hint: "A method of communication" },
+        { word: "research", hint: "Systematic investigation" },
+        { word: "student", hint: "Learner or scholar" }
+      ];
+
+      const wordBox = document.querySelector('.gpt-jumble-word');
+      const input = document.querySelector('input');
+      const result = document.querySelector('.result');
+      const hintBtn = document.querySelector('.hint-btn');
+      const hintBox = document.querySelector('.hint');
+      const checkBtn = document.querySelector('.check-btn');
+
+      let current = {};
+
+      function shuffle(word) {
+        return word.split('').sort(() => Math.random() - 0.5).join('');
+      }
+
+      function newWord() {
+        current = words[Math.floor(Math.random() * words.length)];
+        wordBox.textContent = shuffle(current.word);
+        input.value = '';
+        result.textContent = '';
+        hintBox.textContent = '';
+      }
+
+      checkBtn.onclick = () => {
+        if (input.value.trim().toLowerCase() === current.word) {
+          result.textContent = '✅ Correct!';
+          setTimeout(newWord, 2000);
+        } else {
+          result.textContent = '❌ Try again!';
+        }
+      };
+
+      hintBtn.onclick = () => {
+        hintBox.textContent = '💡 ' + current.hint;
+      };
+
+      newWord();
+    })();
+  </script>
+</body>
+</html>
